@@ -5,6 +5,7 @@ import org.jboss.logmanager.LogManager;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
+import org.jboss.resteasy.tracing.RESTEasyTracingLogger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,40 +17,51 @@ import static org.junit.Assert.assertEquals;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        UndertowJaxrsServer server;
-        Client client;
+        UndertowJaxrsServer server = null;
+        Client client = null;
 
-        System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
-        LogManager.getLogManager().readConfiguration(Main.class.getClassLoader().getResourceAsStream("logging.jboss.properties"));
+        try {
+            System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
+            LogManager.getLogManager().readConfiguration(Main.class.getClassLoader().getResourceAsStream("logging.jboss.properties"));
 
-        server = new UndertowJaxrsServer().start();
+            server = new UndertowJaxrsServer().start();
 
-        Thread.sleep(1000);
 
-        ResteasyDeployment deployment = new ResteasyDeployment();
+            Thread.sleep(1000);
 
-        deployment.setApplicationClass(TracingApp.class.getName());
+            ResteasyDeployment deployment = new ResteasyDeployment();
 
-        DeploymentInfo di = server.undertowDeployment(deployment);
-        di.setClassLoader(TracingApp.class.getClassLoader());
-        di.setContextPath("");
-        di.setDeploymentName("Resteasy");
-        di.getServlets().get("ResteasyServlet").addInitParam(ResteasyContextParameters.RESTEASY_TRACING_TYPE, ResteasyContextParameters.RESTEASY_TRACING_TYPE_ALL)
-                .addInitParam(ResteasyContextParameters.RESTEASY_TRACING_THRESHOLD, ResteasyContextParameters.RESTEASY_TRACING_LEVEL_VERBOSE);
-        server.deploy(di);
+            deployment.setApplicationClass(TracingApp.class.getName());
 
-        client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8081/type");
-        assertEquals(ResteasyContextParameters.RESTEASY_TRACING_TYPE_ALL, target.request().get(String.class));
+            DeploymentInfo di = server.undertowDeployment(deployment);
+            di.setClassLoader(TracingApp.class.getClassLoader());
+            di.setContextPath("");
+            di.setDeploymentName("Resteasy");
+            di.getServlets().get("ResteasyServlet").addInitParam(ResteasyContextParameters.RESTEASY_TRACING_TYPE, ResteasyContextParameters.RESTEASY_TRACING_TYPE_ALL)
+                    .addInitParam(ResteasyContextParameters.RESTEASY_TRACING_THRESHOLD, ResteasyContextParameters.RESTEASY_TRACING_LEVEL_VERBOSE);
+            server.deploy(di);
 
-        target = client.target("http://localhost:8081/level");
-        assertEquals(ResteasyContextParameters.RESTEASY_TRACING_LEVEL_VERBOSE, target.request().get(String.class));
+            client = ClientBuilder.newClient();
+            WebTarget target = client.target("http://localhost:8081/type");
+            assertEquals(ResteasyContextParameters.RESTEASY_TRACING_TYPE_ALL, target.request().get(String.class));
 
-        target = client.target("http://localhost:8081/logger");
-        target.request().get();
+            target = client.target("http://localhost:8081/level");
+            assertEquals(ResteasyContextParameters.RESTEASY_TRACING_LEVEL_VERBOSE, target.request().get(String.class));
 
-        client.close();
-        Thread.sleep(1000);
-        server.stop();
+            target = client.target("http://localhost:8081/logger");
+            assertEquals(RESTEasyTracingLogger.class.getName(), target.request().get(String.class));
+
+
+
+
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+            Thread.sleep(1000);
+            if (server != null) {
+                server.stop();
+            }
+        }
     }
 }
