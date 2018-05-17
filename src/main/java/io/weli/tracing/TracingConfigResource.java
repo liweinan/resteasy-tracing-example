@@ -1,10 +1,6 @@
 package io.weli.tracing;
 
 import org.jboss.resteasy.spi.HttpRequest;
-<<<<<<< HEAD
-import org.jboss.resteasy.spi.ResteasyDeployment;
-=======
->>>>>>> 9066e742e3af385eb12fe88b7321038d4dbbad45
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.tracing.RESTEasyTracingLogger;
 import org.jboss.resteasy.tracing.RESTEasyTracingUtils;
