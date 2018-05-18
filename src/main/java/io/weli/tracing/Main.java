@@ -26,7 +26,6 @@ public class Main {
 
             server = new UndertowJaxrsServer().start();
 
-
             Thread.sleep(1000);
 
             ResteasyDeployment deployment = new ResteasyDeployment();
@@ -40,6 +39,8 @@ public class Main {
             di.getServlets().get("ResteasyServlet").addInitParam(ResteasyContextParameters.RESTEASY_TRACING_TYPE, ResteasyContextParameters.RESTEASY_TRACING_TYPE_ALL)
                     .addInitParam(ResteasyContextParameters.RESTEASY_TRACING_THRESHOLD, ResteasyContextParameters.RESTEASY_TRACING_LEVEL_VERBOSE);
             server.deploy(di);
+
+            Thread.currentThread().join();
 
             client = ClientBuilder.newClient();
             WebTarget target = client.target("http://localhost:8081/type");
