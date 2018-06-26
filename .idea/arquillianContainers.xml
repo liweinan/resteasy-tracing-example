@@ -4,8 +4,5 @@
     <container containerId="container.arquillian.managed.wildFly" name="WildFly Managed">
       <maven-library groupId="org.wildfly.arquillian" artifactId="wildfly-arquillian-container-managed" version="RELEASE" />
     </container>
-    <container containerId="container.arquillian.embedded.undertow" name="Undertow Embedded">
-      <maven-library groupId="org.jboss.arquillian.container" artifactId="undertow-embedded" version="RELEASE" />
-    </container>
   </component>
 </project>
