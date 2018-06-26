@@ -40,7 +40,8 @@ public class Main {
                     .addInitParam(ResteasyContextParameters.RESTEASY_TRACING_THRESHOLD, ResteasyContextParameters.RESTEASY_TRACING_LEVEL_VERBOSE);
             server.deploy(di);
 
-            Thread.currentThread().join();
+            // shutdown server
+//            Thread.currentThread().join();
 
             client = ClientBuilder.newClient();
             WebTarget target = client.target("http://localhost:8081/type");
@@ -51,9 +52,6 @@ public class Main {
 
             target = client.target("http://localhost:8081/logger");
             assertEquals(RESTEasyTracingLogger.class.getName(), target.request().get(String.class));
-
-
-
 
         } finally {
             if (client != null) {
