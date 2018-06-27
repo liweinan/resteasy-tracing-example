@@ -41,7 +41,7 @@ public class Main {
             server.deploy(di);
 
             // shutdown server
-//            Thread.currentThread().join();
+            Thread.currentThread().join();
 
             client = ClientBuilder.newClient();
             WebTarget target = client.target("http://localhost:8081/type");
