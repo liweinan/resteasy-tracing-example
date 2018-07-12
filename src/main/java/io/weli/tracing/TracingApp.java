@@ -1,5 +1,8 @@
 package io.weli.tracing;
 
+import org.jboss.resteasy.plugins.interceptors.GZIPDecodingInterceptor;
+import org.jboss.resteasy.plugins.interceptors.GZIPEncodingInterceptor;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
@@ -20,6 +23,8 @@ public class TracingApp extends Application {
         Set set = new HashSet<Class<?>>();
         set.add(new TracingConfigResource());
         set.add(new FooLocator());
+        set.add(new GZIPDecodingInterceptor());
+        set.add(new GZIPEncodingInterceptor());
         return set;
     }
 }
