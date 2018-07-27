@@ -12,12 +12,41 @@
         <undertow.ver>1.4.18.Final</undertow.ver>
         <resteasy.version>4.0.0-SNAPSHOT</resteasy.version>
     </properties>
+
+    <repositories>
+        <!-- Needed for JSON-B API -->
+        <repository>
+            <id>java.net-Public</id>
+            <name>Maven Java Net Snapshots and Releases</name>
+            <url>https://maven.java.net/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
             <version>3.3.3.Final-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>javax.json.bind</groupId>
+            <artifactId>javax.json.bind-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.jboss.logmanager</groupId>
             <artifactId>jboss-logmanager</artifactId>
