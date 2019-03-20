@@ -2,6 +2,7 @@ package io.weli.tracing;
 
 import io.undertow.servlet.api.DeploymentInfo;
 import org.jboss.logmanager.LogManager;
+import org.jboss.resteasy.core.ResteasyDeploymentImpl;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
@@ -28,7 +29,7 @@ public class Main {
 
             Thread.sleep(1000);
 
-            ResteasyDeployment deployment = new ResteasyDeployment();
+            ResteasyDeployment deployment = new ResteasyDeploymentImpl();
 
             deployment.setApplicationClass(TracingApp.class.getName());
 
