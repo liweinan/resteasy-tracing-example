@@ -41,8 +41,8 @@ public class Main {
                     .addInitParam(ResteasyContextParameters.RESTEASY_TRACING_THRESHOLD, ResteasyContextParameters.RESTEASY_TRACING_LEVEL_VERBOSE);
             server.deploy(di);
 
-            // shutdown server
-            Thread.currentThread().join();
+//            // shutdown server
+//            Thread.currentThread().join();
 
             client = ClientBuilder.newClient();
             WebTarget target = client.target("http://localhost:8081/type");
